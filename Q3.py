@@ -41,7 +41,6 @@ def ADP(num_trials, pi=None, actions=None):
         if (state, action) not in transition_probs:
             transition_probs[(state, action)] = {}
         
-        # P(s'|a,s) = No. of times s' has been reached when action 'a' was executed in state 's' / No. of times state 's' was reached and action 'a' was executed
         transition_probs[(state, action)][next_state] = count / sum(
             transition_counts.get((state, action, (x, y)), 0) for x in range(1, 5) for y in range(1, 4)
         )
@@ -50,7 +49,6 @@ def ADP(num_trials, pi=None, actions=None):
 
 def print_probs(transition_probs):
     count = 0
-    # Print the estimated transition probabilities
     for key in transition_probs:
         for item in transition_probs[key]:
             print(f"P({item})|{key}:\t{transition_probs[key][item]}")

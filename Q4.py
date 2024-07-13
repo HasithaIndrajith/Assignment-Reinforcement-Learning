@@ -1,7 +1,6 @@
 import numpy as np
 from tqdm import trange
 from Q3 import ADP, print_probs
-import pickle
 import pprint
 
 class State:
@@ -23,7 +22,7 @@ class State:
             return -1
         return -0.04
 
-class GLIEAgent:
+class Agent:
     def __init__(self, gamma, P, actions):
         self.gamma = gamma
         self.P = P
@@ -116,7 +115,7 @@ class GLIEAgent:
         pprint.pprint(arrow_grid, width=50)
         print('\n')
 
-    def GLIE(self, max_iterations):
+    def GIE(self, max_iterations):
         U, N, pi = self.initialize_values_and_policy()
         for _ in trange(max_iterations):
             for state in self.S:
@@ -140,13 +139,6 @@ class GLIEAgent:
 
 gamma = 0.9
 actions = ("Move Up", "Move Right", "Move Down", "Move Left")
-try:
-    with open('P.pkl', 'rb') as f:
-        P = pickle.load(f)
-except:
-    P = ADP(10000000, actions=actions)
-    with open('P.pkl', 'wb') as f:
-        pickle.dump(P, f)
-
-agent = GLIEAgent(gamma, P, actions)
-U = agent.GLIE(100000)
+P = ADP(10000000, actions=actions)
+agent = Agent(gamma, P, actions)
+U = agent.GIE(100000)
